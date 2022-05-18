@@ -1,48 +1,75 @@
-# Laravel Tag Caching
-## Version 0.9.2
+# Laravel File Access Encryptor
+## Version 1.0
 
 
-This library is build to fulfill the requirement of tag caching system
+This library will support you to hide/prevent accessing files through the real location
 
 ## Features
-- Stores caching data in a organize way
-- Auto cache expiring
-- Reducing the SQL query requests
+- Hide your files real location
+- URL expiration
+- Regenerate secure unique urls
 
 ### Installation
 ```
-composer require msolutions/tag-cache
+composer require msolutions/file-access-encryptor
 ```
 
 ### Implementing
 
 ```
-use MSL\TagCache;
+use MSL\FileAccessEncryptor;
 
-//caching query or any other data
+/*initialize the class inside your 
+ *constructor or any other function before using
+ **/
+public function __constructor()
+{
+    new FileAccessEncryptor();
+}
 
-$unique_key = "unique-name";
-$ttl = (60*60);//timing for expiry in seconds
-
-$result = TagCache::remember($unique_key, $ttl, function() {
-    //database query fetching should be inside this function
-    $cache_data = Model::get(); //database fetch query 
-    return $cache_data;
-}, ["tag1", "tag2"]);
-
-```
-
-### Removing Cache
+//Generate encrypted token for your files
+$realFilePath = '/path/pdf/mypdf.pdf';
+$urlExpirationTime = 60; //60 seconds (apply the time in seconds)
+$encryptedToken = FileAccessEncryptor::encryptRealPath($realFilePath, $urlExpirationTime);
 
 ```
-$unique_key = "unique-name"; //you cache unique key
-TagCache::flush_cache(["tag1", "tag2"], $unique_key);
-```
 
-### Removing all cache
-
+### Decrypting Token
 ```
-TagCache::flush_all();
+use MSL\FileAccessEncryptor;
+
+/*initialize the class inside your 
+ *constructor or any other function before using
+ **/
+public function __constructor()
+{
+    new FileAccessEncryptor();
+}
+
+//decrypt the token and get the real file path
+FileAccessEncryptor::name("Give-Some-File-Name"); //optional
+
+//encryption value mutation to get the real url (optional)
+FileUrlEncryptor::mutateRealPath(function($value){
+            return $value+1;
+});
+
+//Preview the file (if need to preview the secure object)
+$encryptedToken = 'ENC-TOKEN';
+FileAccessEncryptor::type("pdf"); //[pdf, jpg, jpeg] parse here your file type for preview purpose
+FileUrlEncryptor::preview($encryptedToken);
+
+//decrypt and get the real file path and expiry status
+$encryptedToken = 'ENC-TOKEN';
+$result = FileAccessEncryptor::decryptRealPath($encryptedToken);
+/*
+return ["status" => "valid", "path" => "/path/for-real-file.pdf"];
+
+OR
+
+return ["status" => "expired", "path" => null];
+*/
+
 ```
 
 This open source package is developed for general use, any of developers can use this for free.
