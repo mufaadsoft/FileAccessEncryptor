@@ -4,7 +4,7 @@ namespace MSL\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class TagCacheServiceProvider extends ServiceProvider
+class FileAccessEncryptorServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

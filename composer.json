@@ -1,15 +1,13 @@
 {
-    "name": "msolutions/tag-cache",
-    "description": "File tag caching package",
+    "name": "msolutions/file-access-encryptor",
+    "description": "Encrypt your real file path with expiry",
     "keywords": [
-        "file caching",
-        "file cache",
-        "cache",
-        "laravel cache",
-        "tag cache",
-        "tag caching",
-        "tag file caching",
-        "storage cache"
+        "Hide real file path",
+        "Path expiry",
+        "Unauthorized file access prevention",
+        "laravel lib",
+        "msolutions.lk",
+        "msolutions"
     ],
     "license": "MIT",
     "authors": [
@@ -25,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MSL\\Providers\\TagCacheServiceProvider"
+                "MSL\\Providers\\FileAccessEncryptorServiceProvider"
             ]
         }
     },
