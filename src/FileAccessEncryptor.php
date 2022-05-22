@@ -19,6 +19,7 @@ namespace MSL;
  *******************************/
 
 use Closure;
+use Exception;
 
 class FileAccessEncryptor
 {
@@ -119,9 +120,14 @@ class FileAccessEncryptor
 
     private static function Decrypt($CipherData)
     {
-        $EncryptionKey = base64_decode(self::$ENCRYPTION_KEY);
-        list($Encrypted_Data, $InitializationVector) = array_pad(explode('::', self::base64_special_decode($CipherData), 2), 2, null);
-        return openssl_decrypt($Encrypted_Data, self::$ENCRYPTION_ALGORITHM, $EncryptionKey, 0, $InitializationVector);
+        try{
+            $EncryptionKey = base64_decode(self::$ENCRYPTION_KEY);
+            list($Encrypted_Data, $InitializationVector) = array_pad(explode('::', self::base64_special_decode($CipherData), 2), 2, null);
+            return openssl_decrypt($Encrypted_Data, self::$ENCRYPTION_ALGORITHM, $EncryptionKey, 0, $InitializationVector);
+        }catch(Exception $e)
+        {
+            return null;
+        }
     }
 
     private static function base64_special_encode($enc)
